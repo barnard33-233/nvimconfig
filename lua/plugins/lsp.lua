@@ -19,7 +19,9 @@ local lspconfig = {
     lazy = false,
     config = function()
         local lspconfig = require('lspconfig')
-        lspconfig.clangd.setup({})
+        lspconfig.clangd.setup({
+            cmd = {"clangd", "--background-index", "--all-scopes-completion", "--completion-style=detailed"}
+        })
         lspconfig.lua_ls.setup({})
         lspconfig.pyright.setup({})
         lspconfig.rust_analyzer.setup({})
@@ -55,9 +57,17 @@ local cmp = {
                 {name = 'path'},
                 {name = 'vsnipt'},
             }),
-            formmat = {
-                formmat = lspkind.cmp_format({
+            formatting = {
+                format = lspkind.cmp_format({
+                    mode = "symbol_text",
                     with_text = true,
+                    maxwidth = 50,
+                    ellipsis_char = '...',
+                    show_labelDetails = true,
+                    before = function (entry, vim_item)
+                        vim_item.menu = "[" .. string.upper(entry.source.name) .. "]"
+                        return vim_item
+                    end
                 })
             },
             mapping = cmp.mapping.preset.insert({
@@ -72,21 +82,5 @@ local cmp = {
     end
 }
 
----- symbol outline tool
---local aerial = {
---  'stevearc/aerial.nvim',
---  -- Optional dependencies
---  lazy = true,
---  keys = {
---      {'<leader>a', ':AerialToggle!<cr>', desc = 'aerial-toggle'},
---  },
---  dependencies = {
---     "nvim-tree/nvim-web-devicons"
---  },
---  config = function ()
---      require('aerial').setup({})
---  end
---}
 
-
-return {lspconfig, cmp, aerial}
+return {lspconfig, cmp}
