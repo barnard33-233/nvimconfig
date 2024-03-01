@@ -16,8 +16,21 @@ local keymapping = require('keymapping')
 -- setup of language servers
 local lspconfig = {
     "neovim/nvim-lspconfig",
+    dependencies = {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim"
+    },
     lazy = false,
     config = function()
+        local mason = require('mason')
+        local masonlspconfig = require('mason-lspconfig')
+        mason.setup()
+        masonlspconfig.setup({
+            ensure_installed = {
+                "lua_ls", "clangd", "pyright",
+                -- "rust_analyzer", "tsserver",
+            },
+        })
         local lspconfig = require('lspconfig')
         lspconfig.clangd.setup({
             cmd = {"clangd", "--background-index", "--all-scopes-completion", "--completion-style=detailed"}
