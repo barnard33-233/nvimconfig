@@ -29,6 +29,7 @@ local lspconfig = {
             ensure_installed = {
                 "lua_ls", "clangd", "pyright",
                 -- "rust_analyzer", "tsserver",
+                "svlangserver",
             },
         })
         local lspconfig = require('lspconfig')
@@ -39,6 +40,7 @@ local lspconfig = {
         lspconfig.pyright.setup({})
         lspconfig.rust_analyzer.setup({})
         lspconfig.tsserver.setup({})
+        lspconfig.svlangserver.setup({})
         keymapping.bindkeys(lsp_bindings)
     end
 }
